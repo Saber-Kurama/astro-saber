@@ -1,11 +1,53 @@
 ---
 import Html from './Html.astro';
+import Navbar from '@/partials/Navbar';
+import { twMerge } from 'tailwind-merge';
+import config from '@/config';
+
+export interface Props {
+  // page: Page;
+  hasNavbar?: boolean;
+  hasSidebar?: boolean;
+  hasHero?: boolean;
+  hasComment?: boolean;
+  hasFooter?: boolean;
+}
+
+const { 
+  // page,
+  hasNavbar = true,
+  hasSidebar = true,
+  hasHero = true,
+  hasComment = false,
+  hasFooter = true,
+} = Astro.props;
+
+
+const {
+  navbar,
+  // hero,
+  // sidebar,
+  // pagination,
+  // comment,
+  // footer,
+  // algolia,
+} = config;
 ---
 
 <Html>
   <slot name="head" slot="head" />
-  <main>
-   这是一个容器
-   <slot></slot>
+  {hasNavbar && navbar && <Navbar containerClassName='px-3 mx-auto lg:max-w-[74rem]' config={navbar} client:load />}
+  <main class="mx-auto w-full lg:max-w-[74rem] md:my-1 flex-grow flex">
+    <div class={twMerge(
+      "p-3 min-w-0 w-full",
+      // hasSidebar && sidebarConfig && "md:w-[calc(100%_-_17rem)]",
+    )}>
+      <slot />
+      <!-- {hasComment && comment && (
+        <div class="mt-6">
+          <Comment config={comment} />
+        </div>
+      )} -->
+    </div>
   </main>
 </Html>
